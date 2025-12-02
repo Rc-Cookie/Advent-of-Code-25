@@ -10,6 +10,7 @@ public abstract class FastSolution extends Solution {
 
     protected static final int[] CHAR_VALUE = new int[128];
     private static final boolean[] IS_HEX = new boolean[128];
+    protected static final long[] POW10 = new long[(""+Long.MAX_VALUE).length()];
     static {
         for(int i=0; i<10; i++) {
             CHAR_VALUE['0' + i] = i;
@@ -19,6 +20,9 @@ public abstract class FastSolution extends Solution {
             CHAR_VALUE['a' + i] = CHAR_VALUE['A' + i] = 10 + i;
             IS_HEX['a'+i] = IS_HEX['A'+i] = i < 6;
         }
+        POW10[0] = 1;
+        for(int i=1; i<POW10.length; i++)
+            POW10[i] = 10 * POW10[i-1];
     }
 
     public final int eol(int from) {
@@ -274,5 +278,17 @@ public abstract class FastSolution extends Solution {
         if(longs.data.length == longs.size)
             return longs.data;
         return Arrays.copyOf(longs.data, longs.size);
+    }
+
+
+    public static long pow10(int e) {
+        return POW10[e];
+    }
+
+    public static int log10(long x) {
+        for(int i=0; i<POW10.length; i++)
+            if(x < POW10[i])
+                return i - 1;
+        return POW10.length;
     }
 }
