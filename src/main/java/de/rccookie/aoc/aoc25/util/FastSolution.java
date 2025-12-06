@@ -75,7 +75,7 @@ public abstract class FastSolution extends Solution {
 
     public final int parseUIntHex(int from) {
         int x = 0;
-        do x = x << 4 | chars[from++] - '0';
+        do x = x << 4 | CHAR_VALUE[chars[from++]] - '0';
         while(from != chars.length && chars[from] < IS_HEX.length && IS_HEX[chars[from]]);
         return x;
     }
@@ -103,7 +103,7 @@ public abstract class FastSolution extends Solution {
 
     public final long parseULongHex(int from) {
         long x = 0;
-        do x = x << 4 | chars[from++] - '0';
+        do x = x << 4 | CHAR_VALUE[chars[from++]] - '0';
         while(from != chars.length && chars[from] < IS_HEX.length && IS_HEX[chars[from]]);
         return x;
     }
