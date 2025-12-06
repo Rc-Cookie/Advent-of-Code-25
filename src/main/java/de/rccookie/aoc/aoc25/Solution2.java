@@ -1,6 +1,5 @@
 package de.rccookie.aoc.aoc25;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -20,9 +19,9 @@ public class Solution2 extends FastSolution {
     }
 
     private long sumIDs(Predicate<? super String> filter) {
-        return Arrays.stream(input.trim().split("\\s*,\\s*"))
-                .map(s -> s.split("-"))
-                .flatMapToLong(arr -> LongStream.rangeClosed(Long.parseLong(arr[0]), Long.parseLong(arr[1])))
+        return split("\\s*,\\s*")
+                .map(FastSolution::parseLongs)
+                .flatMapToLong(arr -> LongStream.rangeClosed(arr[0], arr[1]))
                 .mapToObj(Long::toString)
                 .filter(filter)
                 .mapToLong(Long::parseLong)
