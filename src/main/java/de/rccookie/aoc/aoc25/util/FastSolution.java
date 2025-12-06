@@ -1,8 +1,10 @@
 package de.rccookie.aoc.aoc25.util;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import de.rccookie.aoc.Solution;
+import de.rccookie.math.Mathf;
 import de.rccookie.math.constInt2;
 import de.rccookie.math.int2;
 
@@ -290,5 +292,26 @@ public abstract class FastSolution extends Solution {
             if(x < POW10[i])
                 return i - 1;
         return POW10.length;
+    }
+
+    public static <T> T[] transpose(T[] array) {
+        return transpose(array, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] transpose(T[] array, Object fill) {
+        int width = Mathf.max(array, Array::getLength);
+        int height = array.length;
+
+        T[] transpose = (T[]) Array.newInstance(array.getClass().getComponentType().getComponentType(), width, height);
+        for(int y=0; y<height; y++) {
+            int l = Array.getLength(array[y]);
+            for(int x=0; x<l; x++)
+                Array.set(transpose[x], y, Array.get(array[y], x));
+            if(fill != null)
+                for(int x=l; x<width; x++)
+                    Array.set(transpose[x], y, fill);
+        }
+        return transpose;
     }
 }
