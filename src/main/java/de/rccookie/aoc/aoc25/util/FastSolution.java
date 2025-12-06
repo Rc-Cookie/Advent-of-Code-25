@@ -208,7 +208,8 @@ public abstract class FastSolution extends Solution {
 
 
     /**
-     * Parses a list of integers with arbitrary delimiters into an array. Leading and trailing
+     * Parses a list of integers with arbitrary delimiters (except '-' which is treated as minus symbol
+     * when directly in front, but not directly behind a number) into an array. Leading and trailing
      * "stuff" will be ignored.
      *
      * @param str The string to parse the list from
@@ -238,6 +239,7 @@ public abstract class FastSolution extends Solution {
                 }
             }
             ints.add(minus ? -x : x);
+            i++;
         }
         if(ints.data.length == ints.size)
             return ints.data;
@@ -245,8 +247,9 @@ public abstract class FastSolution extends Solution {
     }
 
     /**
-     * Parses a list of integers with arbitrary delimiters into an array using 64-bit signed
-     * integers. Leading and trailing "stuff" will be ignored.
+     * Parses a list of integers with arbitrary delimiters (except '-' which is treated as minus symbol
+     * when directly in front, but not directly behind a number) into an array using 64-bit signed integers.
+     * Leading and trailing "stuff" will be ignored.
      *
      * @param str The string to parse the list from
      * @return The list of longs
@@ -276,6 +279,7 @@ public abstract class FastSolution extends Solution {
                 }
             }
             longs.add(minus ? -x : x);
+            i++;
         }
         if(longs.data.length == longs.size)
             return longs.data;
