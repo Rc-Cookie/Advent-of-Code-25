@@ -6,18 +6,12 @@ import de.rccookie.aoc.aoc25.util.FastSolution;
 public class Solution5 extends FastSolution {
 
     private RangedSet ranges() {
-        return input.split("\n\n")[0].lines()
-                .map(s -> s.replace('-', ','))
-                .map(FastSolution::parseLongs)
-                .collect(RangedSet.inclusiveUnion());
+        return lines(0).map(FastSolution::parseLongs).collect(RangedSet.inclusiveUnion());
     }
 
     @Override
     public Object task1() {
-        return input.split("\n\n")[1].lines()
-                .mapToLong(Long::parseLong)
-                .filter(r -> ranges().contains(r))
-                .count();
+        return lines(1).mapToLong(Long::parseLong).filter(ranges()::contains).count();
     }
 
     @Override
