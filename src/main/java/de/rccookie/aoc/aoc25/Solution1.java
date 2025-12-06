@@ -1,35 +1,27 @@
 package de.rccookie.aoc.aoc25;
 
+import java.util.function.LongBinaryOperator;
+
 import de.rccookie.aoc.aoc25.util.FastSolution;
 
 public class Solution1 extends FastSolution {
 
-    private long parse(String line) {
-        return (line.startsWith("L") ? -1 : 1) * Long.parseLong(line.substring(1));
+    private long simulate(LongBinaryOperator counter) {
+        long pos = 50, count = 0;
+        for(long offset : lines.map(l -> l.replace('L', '-').replace('R', '+')).map(Long::parseLong)) {
+            count += counter.applyAsLong(pos, offset);
+            pos = Math.floorMod(pos + offset, 100);
+        }
+        return count;
     }
 
     @Override
     public Object task1() {
-        long count = 0;
-        long pos = 50;
-        for(long offset : lines.stream().map(this::parse)) {
-            pos = Math.floorMod(pos + offset, 100);
-            if(pos == 0)
-                count++;
-        }
-        return count;
+        return simulate((p,o) -> (p+o) % 100 == 0 ? 1 : 0);
     }
 
     @Override
     public Object task2() {
-        long count = 0;
-        long pos = 50;
-        for(long offset : lines.stream().map(this::parse)) {
-            if(offset >= 0)
-                count += (pos + offset) / 100;
-            else count += ((100 - pos) % 100 - offset) / 100;
-            pos = Math.floorMod(pos + offset, 100);
-        }
-        return count;
+        return simulate((p,o) -> (o >= 0 ? p+o : (100-p) % 100 - o) / 100);
     }
 }
