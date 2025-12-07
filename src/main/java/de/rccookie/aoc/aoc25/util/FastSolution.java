@@ -1,31 +1,10 @@
 package de.rccookie.aoc.aoc25.util;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 import de.rccookie.aoc.Solution;
-import de.rccookie.math.Mathf;
 import de.rccookie.math.constInt2;
 import de.rccookie.math.int2;
 
 public abstract class FastSolution extends Solution {
-
-    protected static final int[] CHAR_VALUE = new int[128];
-    private static final boolean[] IS_HEX = new boolean[128];
-    protected static final long[] POW10 = new long[(""+Long.MAX_VALUE).length()];
-    static {
-        for(int i=0; i<10; i++) {
-            CHAR_VALUE['0' + i] = i;
-            IS_HEX['0'+i] = true;
-        }
-        for(int i=0; i<26; i++) {
-            CHAR_VALUE['a' + i] = CHAR_VALUE['A' + i] = 10 + i;
-            IS_HEX['a'+i] = IS_HEX['A'+i] = i < 6;
-        }
-        POW10[0] = 1;
-        for(int i=1; i<POW10.length; i++)
-            POW10[i] = 10 * POW10[i-1];
-    }
 
     public final int eol(int from) {
         return indexOf((byte) '\n', from, chars.length);
@@ -203,119 +182,5 @@ public abstract class FastSolution extends Solution {
 
     public int vecToIndex(constInt2 v, int width) {
         return v.x() + width * v.y();
-    }
-
-
-
-    /**
-     * Parses a list of integers with arbitrary delimiters (except '-' which is treated as minus symbol
-     * when directly in front, but not directly behind a number) into an array. Leading and trailing
-     * "stuff" will be ignored.
-     *
-     * @param str The string to parse the list from
-     * @return The list of integers
-     */
-    public static int[] parseInts(String str) {
-        IntArrayList ints = new IntArrayList();
-        int i = 0, x, len = str.length();
-        char c;
-        boolean minus;
-        outer: while(true) {
-            do if(i >= len) break outer;
-            while(((c = str.charAt(i++)) < '0' || c > '9') && c != '-');
-
-            //noinspection AssignmentUsedAsCondition
-            if(minus = c == '-') {
-                if(i >= len) break;
-                if((c = str.charAt(i++)) < '0' || c > '9') continue;
-            }
-
-            x = c - '0';
-            if(i < len) {
-                while((c = str.charAt(i)) >= '0' && c <= '9') {
-                    x = 10 * x + c - '0';
-                    if(++i >= len)
-                        break;
-                }
-            }
-            ints.add(minus ? -x : x);
-            i++;
-        }
-        if(ints.data.length == ints.size)
-            return ints.data;
-        return Arrays.copyOf(ints.data, ints.size);
-    }
-
-    /**
-     * Parses a list of integers with arbitrary delimiters (except '-' which is treated as minus symbol
-     * when directly in front, but not directly behind a number) into an array using 64-bit signed integers.
-     * Leading and trailing "stuff" will be ignored.
-     *
-     * @param str The string to parse the list from
-     * @return The list of longs
-     */
-    public static long[] parseLongs(String str) {
-        LongArrayList longs = new LongArrayList();
-        int i = 0, len = str.length();
-        long x;
-        char c;
-        boolean minus;
-        outer: while(true) {
-            do if(i >= len) break outer;
-            while(((c = str.charAt(i++)) < '0' || c > '9') && c != '-');
-
-            //noinspection AssignmentUsedAsCondition
-            if(minus = c == '-') {
-                if(i >= len) break;
-                if((c = str.charAt(i++)) < '0' || c > '9') continue;
-            }
-
-            x = c - '0';
-            if(i < len) {
-                while((c = str.charAt(i)) >= '0' && c <= '9') {
-                    x = 10 * x + c - '0';
-                    if(++i >= len)
-                        break;
-                }
-            }
-            longs.add(minus ? -x : x);
-            i++;
-        }
-        if(longs.data.length == longs.size)
-            return longs.data;
-        return Arrays.copyOf(longs.data, longs.size);
-    }
-
-
-    public static long pow10(int e) {
-        return POW10[e];
-    }
-
-    public static int log10(long x) {
-        for(int i=0; i<POW10.length; i++)
-            if(x < POW10[i])
-                return i - 1;
-        return POW10.length;
-    }
-
-    public static <T> T[] transpose(T[] array) {
-        return transpose(array, null);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T[] transpose(T[] array, Object fill) {
-        int width = Mathf.max(array, Array::getLength);
-        int height = array.length;
-
-        T[] transpose = (T[]) Array.newInstance(array.getClass().getComponentType().getComponentType(), width, height);
-        for(int y=0; y<height; y++) {
-            int l = Array.getLength(array[y]);
-            for(int x=0; x<l; x++)
-                Array.set(transpose[x], y, Array.get(array[y], x));
-            if(fill != null)
-                for(int x=l; x<width; x++)
-                    Array.set(transpose[x], y, fill);
-        }
-        return transpose;
     }
 }

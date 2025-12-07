@@ -6,12 +6,12 @@ import de.rccookie.aoc.aoc25.util.FastSolution;
 public class Solution5 extends FastSolution {
 
     private RangedSet ranges() {
-        return lines(0).map(FastSolution::parseLongs).collect(RangedSet.inclusiveUnion());
+        return arrays(0).collect(RangedSet.inclusiveUnion());
     }
 
     @Override
     public Object task1() {
-        return lines(1).mapToLong(Long::parseLong).filter(ranges()::contains).count();
+        return nums(1).filter(ranges()::contains).count();
     }
 
     @Override
