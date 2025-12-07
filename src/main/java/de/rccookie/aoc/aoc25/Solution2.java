@@ -19,9 +19,7 @@ public class Solution2 extends FastSolution {
     }
 
     private long sumIDs(Predicate<? super String> filter) {
-        return split("\\s*,\\s*")
-                .map(FastSolution::parseLongs)
-                .flatMapToLong(arr -> LongStream.rangeClosed(arr[0], arr[1]))
+        return pairs().flatMapToLong(r -> LongStream.rangeClosed(r[0], r[1]))
                 .mapToObj(Long::toString)
                 .filter(filter)
                 .mapToLong(Long::parseLong)
