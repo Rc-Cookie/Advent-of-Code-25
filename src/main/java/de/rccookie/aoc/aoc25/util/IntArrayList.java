@@ -48,6 +48,10 @@ public final class IntArrayList implements Iterable<Integer>, Cloneable<IntArray
         return Arrays.copyOf(data, size);
     }
 
+    public int[] toArrayNoCopy() {
+        return data.length == size ? data : Arrays.copyOf(data, size);
+    }
+
     public int size() {
         return size;
     }
