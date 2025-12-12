@@ -7,13 +7,14 @@ import de.rccookie.math.constInt2;
 public class Solution7 extends FastSolution {
 
     long[] beams;
-    int splits = 0;
+    int splits;
 
     @Override
     public void load() {
         constInt2 S = grid.find('S');
         beams = new long[grid.width];
         beams[S.x()] = 1;
+        splits = 0;
 
         for(int y=S.y()+1; y<grid.height; y++) {
             long[] newBeams = new long[grid.width];
